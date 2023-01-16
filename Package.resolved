@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "composablerequest",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sbertix/ComposableRequest",
+      "state" : {
+        "branch" : "composablerequest-7.0.0",
+        "revision" : "5bfcd19f61b00a7b7fe16fa682d88efb69ad6f9d"
+      }
+    },
+    {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "revision" : "84e546727d66f1adc5439debad16270d0fdd04e7",
+        "version" : "4.2.2"
+      }
+    }
+  ],
+  "version" : 2
+}

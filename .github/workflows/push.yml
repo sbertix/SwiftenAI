@@ -1,0 +1,140 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # lint code.
+  lint:
+    name: Lint
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # only lint on actual code changes.
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.base_ref }}
+          filters: |
+            src:
+              - '**/*.swift'
+      - name: Lint
+        if: steps.changes.outputs.src == 'true'
+        run: |
+          set -o pipefail
+          swiftlint lint --strict --quiet | sed -E 's/^(.*):([0-9]+):([0-9]+): (warning|error|[^:]+): (.*)/::\4 title=Lint error,file=\1,line=\2,col=\3::\5\n\1:\2:\3/'
+
+  # build the library.
+  build:
+    name: Build
+    needs: lint
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # only build on actual code changes.
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.event.push.before }}
+          filters: |
+            src:
+              - '**/*.swift'
+      - name: Build
+        if: steps.changes.outputs.src == 'true'
+        run: swift build
+
+  # release a new version.
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout `main`.
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+      - name: Release version
+        id: release-version
+        uses: tomtom-international/commisery-action/bump@v1
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+      # create the changelog.
+      - name: Changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          git-message:       "chore(release): relase \'v{version}\'"
+          git-user-name: "github-actions"
+          git-user-email: "41898282+github-actions[bot]@users.noreply.github.com"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          tag-prefix: ""
+          output-file: "false"
+          skip-commit: "true"
+          skip-version-file: "true"
+      # release the new version.
+      - name: Release
+        id: release
+        uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: v${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+
+  # create docs.
+  docs:
+    name: Docs
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the `main` branch.
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+      # only push docs on actual code changes.
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.event.push.before }}
+          filters: |
+            src:
+              - '**/*.swift'
+              - '**/push.yml'
+      # remove `@_exported` files.
+      - name: Suppress @_exported
+        run: find Sources -name "@_exported.swift" -delete
+      # create documentation for `SwiftenAI`.
+      - name: Docs (Requests)
+        if: steps.changes.outputs.src == 'true'
+        uses: SwiftDocOrg/swift-doc@master
+        with:
+          base-url: "https://sbertix.github.io/SwiftenAI"
+          format: "html"
+          inputs: "Sources"
+          output: docs
+      # update permissions.
+      - name: Update Permissions
+        if: steps.changes.outputs.src == 'true'
+        run: "sudo chown --recursive $USER docs"
+      # publish to GitHub pages.
+      - name: Publish
+        if: steps.changes.outputs.src == 'true'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.CHATOPS_PAT }}
+          BRANCH: gh-pages
+          FOLDER: docs
