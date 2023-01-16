@@ -17,7 +17,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/sbertix/ComposableRequest", branch: "composablerequest-7.0.0")
+        .package(url: "https://github.com/sbertix/ComposableRequest", .upToNextMinor(from: "7.0.0"))
     ],
     targets: [
         .target(
