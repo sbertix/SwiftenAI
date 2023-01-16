@@ -4,17 +4,16 @@
 
 [![Swift](https://img.shields.io/badge/Swift-5.7-%23DE5C43?style=flat&logo=swift)](https://swift.org)
 <br />
-![iOS](https://img.shields.io/badge/iOS-13.0-8CFF96)
-![macOS](https://img.shields.io/badge/macOS-10.15-8CFF96)
-![tvOS](https://img.shields.io/badge/tvOS-13.0-8CFF96)
-![watchOS](https://img.shields.io/badge/watchOS-6.0-8CFF96)
+![iOS](https://img.shields.io/badge/iOS-13.0-E1778E)
+![macOS](https://img.shields.io/badge/macOS-10.15-E1778E)
+![tvOS](https://img.shields.io/badge/tvOS-13.0-E1778E)
+![watchOS](https://img.shields.io/badge/watchOS-6.0-E1778E)
 
 <br />
 
 **SwiftenAI** is a wrapper for [**OpenAI**](https://beta.openai.com/docs) API, written entirely in (modern) **Swift**, supporting both **Combine** and _structured concurrency_ (`async`/`await`).
 
 ## Status
-![push](https://github.com/sbertix/SwiftenAI/workflows/push/badge.svg)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/sbertix/SwiftenAI)
 
 You can find all changelogs directly under every [release](https://github.com/sbertix/SwiftenAI/releases).
@@ -34,7 +33,7 @@ Just remember to refer to our [guidelines](CONTRIBUTING.md) and [Code of Conduct
 
 ## Usage
 
-### Secret
+### Secret
 
 Create a `Secret`, holding reference to your API token, and, optionally, an organization identifier.
 
