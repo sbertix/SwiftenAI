@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sbertix/ComposableRequest",
       "state" : {
-        "branch" : "composablerequest-7.0.0",
-        "revision" : "5bfcd19f61b00a7b7fe16fa682d88efb69ad6f9d"
+        "revision" : "151026359f4a2c89dcd06f6880eb4a940dcbb7bc",
+        "version" : "7.0.0"
       }
     },
     {
