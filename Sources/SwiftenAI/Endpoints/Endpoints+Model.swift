@@ -9,11 +9,6 @@ import Foundation
 
 import Requests
 
-public extension Endpoints {
-    /// A `typealias` for `ShortModel`.
-    typealias Model = ShortModel
-}
-
 public extension Endpoints.Model {
     /// Fetch all available models.
     static var allCases: Providers.Lock<Secret, AnySingleEndpoint<[Model]>> {

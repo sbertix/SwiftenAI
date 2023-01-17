@@ -9,7 +9,7 @@ import Foundation
 
 import Requests
 
-public extension Endpoints {
+public extension SwiftenAI.Endpoints {
     /// A `struct` defining properties
     /// for completion-specific endpoints.
     struct Completion: Encodable {
@@ -73,7 +73,8 @@ public extension Endpoints {
 
         /// Up to 4 sequences where the API will stop generating further
         /// tokens. The returned text will not contain the stop sequence.
-        public var stop: [String]?
+        /// Defaults to <|endoftext|>.
+        public var stop: [String] = ["\u{0003}"]
 
         /// Number between -2.0 and 2.0. Positive values penalize new
         /// tokens based on whether they appear in the text so far,
@@ -145,7 +146,7 @@ public extension Endpoints {
             n: Int = 1,
             logprobs: Int? = nil,
             echo: Bool = false,
-            stops: [String]? = nil,
+            stops: [String],
             presencePenalty: Double = 0,
             frequencyPenalty: Double = 0,
             bestOf: Int = 1,
@@ -197,7 +198,7 @@ public extension Endpoints {
             n: Int = 1,
             logprobs: Int? = nil,
             echo: Bool = false,
-            stops: [String]? = nil,
+            stops: [String],
             presencePenalty: Double = 0,
             frequencyPenalty: Double = 0,
             bestOf: Int = 1,
@@ -251,7 +252,7 @@ public extension Endpoints {
             n: Int = 1,
             logprobs: Int? = nil,
             echo: Bool = false,
-            stop: String,
+            stop: String = "\u{0003}",
             presencePenalty: Double = 0,
             frequencyPenalty: Double = 0,
             bestOf: Int = 1,
@@ -305,7 +306,7 @@ public extension Endpoints {
             n: Int = 1,
             logprobs: Int? = nil,
             echo: Bool = false,
-            stop: String,
+            stop: String = "\u{0003}",
             presencePenalty: Double = 0,
             frequencyPenalty: Double = 0,
             bestOf: Int = 1,

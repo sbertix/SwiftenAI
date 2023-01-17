@@ -9,7 +9,7 @@ import Foundation
 
 import Requests
 
-public extension Endpoints {
+public extension SwiftenAI.Endpoints {
     /// A `struct` defining properties
     /// for completion-specific endpoints.
     struct Edit: Encodable {
