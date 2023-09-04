@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # validate commits.
       - name: Validate commits
         uses: tomtom-international/commisery-action@master
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # only lint on actual code changes.
       - uses: dorny/paths-filter@v2
         id: changes
@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # only build on actual code changes.
       - uses: dorny/paths-filter@v2
         id: changes
